@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tennis Club Intake — Propel IT Solutions</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a0f1e;
+    --deep: #0d1428;
+    --accent: #00d4ff;
+    --accent2: #0066ff;
+    --accent3: #7b2fff;
+    --white: #f0f4ff;
+    --muted: #8892aa;
+    --card: #111827;
+    --border: rgba(0, 212, 255, 0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.2rem 6%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(10, 15, 30, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.3rem;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    color: var(--white);
+  }
+  .logo span { color: var(--accent); }
+
+  .nav-label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* PAGE */
+  .page {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 8rem 2rem 5rem;
+  }
+
+  /* HEADER */
+  .page-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(0, 212, 255, 0.08);
+    border: 1px solid rgba(0, 212, 255, 0.25);
+    border-radius: 100px;
+    padding: 0.4rem 1rem;
+    font-size: 0.78rem;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .page-badge::before {
+    content: '🎾';
+    font-size: 0.85rem;
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.75rem;
+    animation: fadeUp 0.5s 0.1s ease both;
+  }
+
+  h1 .accent-word {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .page-sub {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 3rem;
+    animation: fadeUp 0.5s 0.2s ease both;
+  }
+
+  /* PROGRESS */
+  .progress-bar {
+    display: flex;
+    gap: 0.4rem;
+    margin-bottom: 3rem;
+    animation: fadeUp 0.5s 0.25s ease both;
+  }
+
+  .progress-seg {
+    height: 3px;
+    flex: 1;
+    background: rgba(0, 212, 255, 0.15);
+    border-radius: 2px;
+    transition: background 0.4s;
+  }
+
+  .progress-seg.active { background: var(--accent); }
+  .progress-seg.done { background: var(--accent2); }
+
+  /* SECTIONS */
+  .section {
+    margin-bottom: 3rem;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    margin-bottom: 1.5rem;
+    color: var(--white);
+  }
+
+  /* FORM ELEMENTS */
+  .form-group {
+    margin-bottom: 1.4rem;
+  }
+
+  label {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+
+  .hint {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    font-weight: 300;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="number"],
+  input[type="url"],
+  select,
+  textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 300;
+    transition: border-color 0.2s, background 0.2s;
+    outline: none;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--accent);
+    background: rgba(0, 212, 255, 0.04);
+  }
+
+  input::placeholder, textarea::placeholder { color: var(--muted); }
+
+  select option { background: var(--deep); color: var(--white); }
+
+  textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  /* CHECKBOX / RADIO GROUPS */
+  .check-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+  }
+
+  .check-item:hover {
+    border-color: rgba(0, 212, 255, 0.35);
+    background: rgba(0, 212, 255, 0.03);
+  }
+
+  .check-item input[type="checkbox"],
+  .check-item input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+
+  .check-item.checked {
+    border-color: rgba(0, 212, 255, 0.5);
+    background: rgba(0, 212, 255, 0.05);
+  }
+
+  .check-label {
+    font-size: 0.88rem;
+    color: var(--white);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  .check-label small {
+    display: block;
+    color: var(--muted);
+    font-weight: 300;
+    font-size: 0.8rem;
+    margin-top: 0.15rem;
+  }
+
+  /* SCALE */
+  .scale-group {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .scale-label-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .scale-btn {
+    flex: 1;
+    padding: 0.55rem 0;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--muted);
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+
+  .scale-btn:hover { border-color: rgba(0, 212, 255, 0.4); color: var(--white); }
+  .scale-btn.selected { background: rgba(0, 212, 255, 0.12); border-color: var(--accent); color: var(--accent); }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2.5rem 0;
+  }
+
+  /* SUBMIT */
+  .form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .form-meta {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, var(--accent2), var(--accent3));
+    color: white;
+    padding: 0.85rem 2rem;
+    border-radius: 6px;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(0, 102, 255, 0.3);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 102, 255, 0.4);
+  }
+
+  /* SUCCESS */
+  .success-msg {
+    display: none;
+    text-align: center;
+    padding: 3rem 2rem;
+    border: 1px solid rgba(0, 212, 255, 0.25);
+    border-radius: 12px;
+    background: rgba(0, 212, 255, 0.04);
+    margin-top: 2rem;
+  }
+
+  .success-msg h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 0.75rem;
+  }
+
+  .success-msg p { color: var(--muted); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    .form-row { grid-template-columns: 1fr; }
+    .scale-btn { font-size: 0.75rem; padding: 0.5rem 0; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html">Propel<span>IT</span></a>
+  <span class="nav-label">Internal Intake Form</span>
+</nav>
+
+<div class="page">
+
+  <div class="page-badge">Tennis Club Intake</div>
+  <h1>New Client <span class="accent-word">Discovery</span></h1>
+  <p class="page-sub">Complete this form before or during the initial consultation with a tennis club. Use it to understand their current setup, pain points, and where Propel IT can add the most value.</p>
+
+  <div class="progress-bar" id="progressBar">
+    <div class="progress-seg active" data-sec="0"></div>
+    <div class="progress-seg" data-sec="1"></div>
+    <div class="progress-seg" data-sec="2"></div>
+    <div class="progress-seg" data-sec="3"></div>
+    <div class="progress-seg" data-sec="4"></div>
+    <div class="progress-seg" data-sec="5"></div>
+  </div>
+
+  <form id="intakeForm" onsubmit="handleSubmit(event)">
+
+    <!-- SECTION 1: Club Info -->
+    <div class="section">
+      <div class="section-label">Section 1 — Club Details</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Club Name</label>
+          <input type="text" placeholder="e.g. Castleknock Tennis Club">
+        </div>
+        <div class="form-group">
+          <label>Location</label>
+          <input type="text" placeholder="e.g. Dublin 15">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Contact Name</label>
+          <input type="text" placeholder="Name of person we're speaking with">
+        </div>
+        <div class="form-group">
+          <label>Their Role</label>
+          <input type="text" placeholder="e.g. Club Secretary, Chairperson">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="contact@clubname.ie">
+        </div>
+        <div class="form-group">
+          <label>Approximate Member Count</label>
+          <input type="number" placeholder="e.g. 350">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Does the club have a website?</label>
+        <input type="url" placeholder="https://...  (leave blank if none)">
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- SECTION 2: Current Tech -->
+    <div class="section">
+      <div class="section-label">Section 2 — Current Technology</div>
+      <div class="form-group">
+        <label>What software or platforms does the club currently use?</label>
+        <p class="hint">Tick all that apply</p>
+        <div class="check-group">
+          <label class="check-item"><input type="checkbox" onchange="toggleChecked(this)"><span class="check-label">Clubspark / LTA platform<small>Booking, membership, court management</small></span></label>
+          <label class="check-item"><input type="checkbox" onchange="toggleChecked(this)"><span class="check-label">Tennis Ireland system<small>Ratings, fixtures, national membership</small></span></label>
+          <label class="check-item"><input type="checkbox" onchange="toggleChecked(this)"><span class="check-label">Spreadsheets (Excel / Google Sheets)<small>For membership, finances, rosters</small></span></label>
+          <label class="check-item"><input type="checkbox" onchange="toggleChecked(this)"><span class="check-label">Email newsletters (Mailchimp, etc.)<small>Communicating with members</small></span></label>
+          <label class="check-item"><input type="checkbox" onchange="toggleChecked(this)"><span class="check-label">WhatsApp / group chats<small>Main comms channel for members or teams</small></span></label>
+          <label class="check-item"><input type="checkbox" onchange="toggleChecked(this)"><span class="check-label">Social media (Facebook, Instagram)<small>Public-facing communications</small></span></label>
+          <label class="check-item"><input type="checkbox" onchange="toggleChecked(this)"><span class="check-label">Accounting software (Xero, Sage, etc.)</span></label>
+          <label class="check-item"><input type="checkbox" onchange="toggleChecked(this)"><span class="check-label">Nothing formal — mostly manual / paper-based</span></label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Any other tools or software not listed above?</label>
+        <textarea placeholder="List any other platforms, apps, or tools the club uses..."></textarea>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- SECTION 3: Pain Points -->
+    <div class="section">
+      <div class="section-label">Section 3 — Challenges & Pain Points</div>
+      <div class="form-group">
+        <label>Where does the club lose the most time each week?</label>
+        <p class="hint">Tick the biggest time drains</p>
+        <div class="check-group">
+          <label class="check-item"><input type="checkbox" onchange="toggleChecked(this)"><span class="check-label">Chasing membership renewals & payments</span></label>
+          <label class="check-item"><input type="checkbox" onchange="toggleChecked(this)"><span class="check-label">Managing court bookings manually</span></label>
+          <label class="check-item"><input type="checkbox" onchange="toggleChecked(this)"><span class="check-label">Organising fixtures, leagues & ladders</span></label>
+          <label class="check-item"><input type="checkbox" onchange="toggleChecked(this)"><span class="check-label">Communicating with members (emails, updates)</span></label>
+          <label class="check-item"><input type="checkbox" onchange="toggleChecked(this)"><span class="check-label">Handling new member sign-ups & onboarding</span></label>
+          <label class="check-item"><input type="checkbox" onchange="toggleChecked(this)"><span class="check-label">Managing coaching schedules & bookings</span></label>
+          <label class="check-item"><input type="checkbox" onchange="toggleChecked(this)"><span class="check-label">Tracking finances & club accounts</span></label>
+          <label class="check-item"><input type="checkbox" onchange="toggleChecked(this)"><span class="check-label">Running events, social sessions, tournaments</span></label>
+          <label class="check-item"><input type="checkbox" onchange="toggleChecked(this)"><span class="check-label">Volunteer coordination & committee management</span></label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>What is the single biggest frustration right now?</label>
+        <textarea placeholder="In their own words — what keeps the chairperson or secretary up at night?"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Has the club tried to fix any of these before? What happened?</label>
+        <textarea placeholder="Previous attempts, tools tried, why they didn't stick..."></textarea>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- SECTION 4: Goals -->
+    <div class="section">
+      <div class="section-label">Section 4 — Goals & Priorities</div>
+      <div class="form-group">
+        <label>What does success look like in 12 months?</label>
+        <textarea placeholder="What would make the club say 'this was absolutely worth it'?"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Which of these outcomes matters most to the club?</label>
+        <p class="hint">Select up to 3</p>
+        <div class="check-group">
+          <label class="check-item"><input type="checkbox" onchange="toggleChecked(this)"><span class="check-label">Save time for volunteers & committee members</span></label>
+          <label class="check-item"><input type="checkbox" onchange="toggleChecked(this)"><span class="check-label">Grow membership numbers</span></label>
+          <label class="check-item"><input type="checkbox" onchange="toggleChecked(this)"><span class="check-label">Improve member experience & retention</span></label>
+          <label class="check-item"><input type="checkbox" onchange="toggleChecked(this)"><span class="check-label">Better financial visibility & reporting</span></label>
+          <label class="check-item"><input type="checkbox" onchange="toggleChecked(this)"><span class="check-label">Reduce reliance on one or two key people</span></label>
+          <label class="check-item"><input type="checkbox" onchange="toggleChecked(this)"><span class="check-label">Modernise the club's image & communications</span></label>
+          <label class="check-item"><input type="checkbox" onchange="toggleChecked(this)"><span class="check-label">Run a smoother coaching programme</span></label>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- SECTION 5: Budget & Readiness -->
+    <div class="section">
+      <div class="section-label">Section 5 — Budget & Readiness</div>
+      <div class="form-group">
+        <label>Has the club set aside any budget for IT or technology improvements?</label>
+        <div class="check-group">
+          <label class="check-item"><input type="radio" name="budget" onchange="toggleChecked(this)"><span class="check-label">Yes — they have a specific budget in mind</span></label>
+          <label class="check-item"><input type="radio" name="budget" onchange="toggleChecked(this)"><span class="check-label">Not yet, but they're open to investing if the value is clear</span></label>
+          <label class="check-item"><input type="radio" name="budget" onchange="toggleChecked(this)"><span class="check-label">Very limited — needs to be low cost or phased</span></label>
+          <label class="check-item"><input type="radio" name="budget" onchange="toggleChecked(this)"><span class="check-label">Unknown — not discussed yet</span></label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>How tech-comfortable is the committee overall?</label>
+        <div class="scale-label-row"><span>Not at all comfortable</span><span>Very comfortable</span></div>
+        <div class="scale-group" id="techScale">
+          <button type="button" class="scale-btn" onclick="selectScale('techScale', this)">1</button>
+          <button type="button" class="scale-btn" onclick="selectScale('techScale', this)">2</button>
+          <button type="button" class="scale-btn" onclick="selectScale('techScale', this)">3</button>
+          <button type="button" class="scale-btn" onclick="selectScale('techScale', this)">4</button>
+          <button type="button" class="scale-btn" onclick="selectScale('techScale', this)">5</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>How urgent is this for them?</label>
+        <div class="scale-label-row"><span>No rush</span><span>Need it now</span></div>
+        <div class="scale-group" id="urgencyScale">
+          <button type="button" class="scale-btn" onclick="selectScale('urgencyScale', this)">1</button>
+          <button type="button" class="scale-btn" onclick="selectScale('urgencyScale', this)">2</button>
+          <button type="button" class="scale-btn" onclick="selectScale('urgencyScale', this)">3</button>
+          <button type="button" class="scale-btn" onclick="selectScale('urgencyScale', this)">4</button>
+          <button type="button" class="scale-btn" onclick="selectScale('urgencyScale', this)">5</button>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- SECTION 6: Notes -->
+    <div class="section">
+      <div class="section-label">Section 6 — Consultant Notes</div>
+      <div class="form-group">
+        <label>Top 3 opportunities identified during this call</label>
+        <textarea placeholder="1. &#10;2. &#10;3. " style="min-height: 110px;"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Any concerns or blockers to be aware of?</label>
+        <textarea placeholder="Budget constraints, internal resistance, technical limitations, timing issues..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Recommended next step</label>
+        <div class="check-group">
+          <label class="check-item"><input type="radio" name="nextstep" onchange="toggleChecked(this)"><span class="check-label">Send proposal / scope document</span></label>
+          <label class="check-item"><input type="radio" name="nextstep" onchange="toggleChecked(this)"><span class="check-label">Follow-up call with full committee</span></label>
+          <label class="check-item"><input type="radio" name="nextstep" onchange="toggleChecked(this)"><span class="check-label">On-site visit / system audit</span></label>
+          <label class="check-item"><input type="radio" name="nextstep" onchange="toggleChecked(this)"><span class="check-label">Nurture — not ready yet, check back in</span></label>
+          <label class="check-item"><input type="radio" name="nextstep" onchange="toggleChecked(this)"><span class="check-label">Not a fit</span></label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Additional notes</label>
+        <textarea placeholder="Anything else worth capturing from the conversation..."></textarea>
+      </div>
+    </div>
+
+    <div class="form-footer">
+      <span class="form-meta">Propel IT Solutions — Internal Use Only</span>
+      <button type="submit" class="btn-primary">Save Intake Record →</button>
+    </div>
+
+  </form>
+
+  <div class="success-msg" id="successMsg">
+    <div style="font-size:2.5rem; margin-bottom:1rem;">✅</div>
+    <h2>Intake Saved</h2>
+    <p>Record captured for this tennis club consultation.<br>Use the notes to build your proposal.</p>
+  </div>
+
+</div>
+
+<script>
+  function toggleChecked(input) {
+    const item = input.closest('.check-item');
+    if (input.type === 'radio') {
+      const name = input.name;
+      document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
+        r.closest('.check-item').classList.remove('checked');
+      });
+    }
+    item.classList.toggle('checked', input.checked);
+    updateProgress();
+  }
+
+  function selectScale(groupId, btn) {
+    const group = document.getElementById(groupId);
+    group.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const sections = [
+      () => document.querySelector('input[placeholder="e.g. Castleknock Tennis Club"]').value,
+      () => document.querySelectorAll('#intakeForm .check-item input[type="checkbox"]:checked').length > 0,
+      () => document.querySelector('textarea[placeholder*="biggest frustration"]').value,
+      () => document.querySelector('textarea[placeholder*="success look like"]').value,
+      () => document.querySelector('input[name="budget"]:checked'),
+      () => document.querySelector('input[name="nextstep"]:checked'),
+    ];
+    const segs = document.querySelectorAll('.progress-seg');
+    sections.forEach((check, i) => {
+      const done = !!check();
+      segs[i].classList.toggle('done', done);
+      segs[i].classList.toggle('active', !done && i === sections.findIndex(s => !s()));
+    });
+  }
+
+  document.querySelectorAll('input, textarea, select').forEach(el => {
+    el.addEventListener('input', updateProgress);
+  });
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    document.getElementById('intakeForm').style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  updateProgress();
+</script>
+</body>
+</html>
