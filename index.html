@@ -737,6 +737,105 @@
     }
   }
 
+
+  /* TESTIMONIALS */
+  .testimonials {
+    padding: 6rem 6%;
+    background: var(--deep);
+  }
+
+  .testimonials .section-label { margin-bottom: 1rem; }
+  .testimonials .section-title { margin-bottom: 0.75rem; }
+  .testimonials .section-sub { margin-bottom: 3rem; }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .testimonial-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .testimonial-card:hover {
+    border-color: rgba(0, 212, 255, 0.35);
+    transform: translateY(-3px);
+  }
+
+  .testimonial-stars {
+    color: #f4c430;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+  }
+
+  .testimonial-quote {
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: var(--white);
+    font-weight: 300;
+    flex: 1;
+  }
+
+  .testimonial-quote::before {
+    content: '"';
+    font-family: 'Syne', sans-serif;
+    font-size: 3rem;
+    color: var(--accent);
+    line-height: 0;
+    vertical-align: -1rem;
+    margin-right: 0.2rem;
+    opacity: 0.6;
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-top: 1px solid var(--border);
+    padding-top: 1.25rem;
+  }
+
+  .author-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent2), var(--accent3));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .author-info .name {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--white);
+  }
+
+  .author-info .role {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 0.15rem;
+  }
+
+  @media (max-width: 768px) {
+    .testimonials-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -871,6 +970,53 @@
         <div class="ai-feature"><div class="ai-dot"></div><span>Custom AI tools built for your business</span></div>
       </div>
     </div>
+  </div>
+</section>
+
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="section-label">What Clients Say</div>
+  <h2 class="section-title">Real results for real businesses & clubs</h2>
+  <p class="section-sub">Here's what our clients have to say about working with Adopt IT Solutions.</p>
+  <div class="testimonials-grid">
+
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-quote">Adopt IT completely transformed how we manage our membership and court bookings. What used to take hours every week is now fully automated. The committee can't believe the difference it's made.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">BL</div>
+        <div class="author-info">
+          <div class="name">Club Secretary</div>
+          <div class="role">Bishopstown Lawn Tennis Club, Cork</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-quote">We had no idea where to start with AI. Joe walked us through everything in plain English, identified exactly where we were losing time, and built a solution that just works. Brilliant service.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">SM</div>
+        <div class="author-info">
+          <div class="name">Owner</div>
+          <div class="role">Small Business, Dublin</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-quote">From the first consultation to final handover, the whole process was straightforward and professional. We now have systems in place that will save us thousands of hours over the coming years.</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">PO</div>
+        <div class="author-info">
+          <div class="name">Operations Manager</div>
+          <div class="role">Sports Club, Cork</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
