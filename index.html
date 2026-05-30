@@ -1211,7 +1211,7 @@
       <p>Whether you're ready to start or just exploring what's possible, get in touch. We'll get back to you within one business day.</p>
       <div class="contact-detail">
         <div class="icon">📧</div>
-        <span>joe@adopt-it.ie</span>
+        <a href="mailto:joe@adopt-it.ie" style="color: var(--white); text-decoration: none;">joe@adopt-it.ie</a>
       </div>
       <div class="contact-detail">
         <div class="icon">📍</div>
@@ -1288,6 +1288,11 @@
         btn.textContent = 'Message Sent ✓';
         btn.style.background = 'linear-gradient(135deg, #00b894, #00cec9)';
         form.reset();
+        setTimeout(() => {
+          btn.textContent = 'Send Message →';
+          btn.style.background = '';
+          btn.disabled = false;
+        }, 3000);
       } else {
         btn.textContent = 'Something went wrong — try again';
         btn.style.background = 'linear-gradient(135deg, #e17055, #d63031)';
