@@ -1222,28 +1222,28 @@
         <span>Mon–Fri, 9am–6pm</span>
       </div>
     </div>
-    <form class="contact-form" onsubmit="handleSubmit(event)">
+    <form class="contact-form" id="contactForm" onsubmit="handleSubmit(event)">
       <div class="form-row">
         <div class="form-group">
           <label>First Name</label>
-          <input type="text" placeholder="John" required>
+          <input type="text" name="first_name" placeholder="John" required>
         </div>
         <div class="form-group">
           <label>Last Name</label>
-          <input type="text" placeholder="Murphy" required>
+          <input type="text" name="last_name" placeholder="Murphy" required>
         </div>
       </div>
       <div class="form-group">
         <label>Email</label>
-        <input type="email" placeholder="john@yourbusiness.ie" required>
+        <input type="email" name="email" placeholder="john@yourbusiness.ie" required>
       </div>
       <div class="form-group">
         <label>Business / Club Name</label>
-        <input type="text" placeholder="Your Business or Club">
+        <input type="text" name="business" placeholder="Your Business or Club">
       </div>
       <div class="form-group">
         <label>What are you looking for?</label>
-        <select>
+        <select name="service">
           <option value="">Select a service...</option>
           <option>Free Initial Consultation</option>
           <option>AI Integration & Automation</option>
@@ -1255,7 +1255,7 @@
       </div>
       <div class="form-group">
         <label>Tell us a bit about your business</label>
-        <textarea placeholder="What does your business or club do, and what challenges are you facing?"></textarea>
+        <textarea name="message" placeholder="What does your business or club do, and what challenges are you facing?"></textarea>
       </div>
       <button type="submit" class="form-submit">Send Message →</button>
     </form>
@@ -1271,10 +1271,34 @@
 <script>
   function handleSubmit(e) {
     e.preventDefault();
-    const btn = e.target.querySelector('.form-submit');
-    btn.textContent = 'Message Sent ✓';
-    btn.style.background = 'linear-gradient(135deg, #00b894, #00cec9)';
+    const form = document.getElementById('contactForm');
+    const btn = form.querySelector('.form-submit');
+    const formData = new FormData(form);
+
+    btn.textContent = 'Sending...';
     btn.disabled = true;
+
+    fetch('mail.php', {
+      method: 'POST',
+      body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        btn.textContent = 'Message Sent ✓';
+        btn.style.background = 'linear-gradient(135deg, #00b894, #00cec9)';
+        form.reset();
+      } else {
+        btn.textContent = 'Something went wrong — try again';
+        btn.style.background = 'linear-gradient(135deg, #e17055, #d63031)';
+        btn.disabled = false;
+      }
+    })
+    .catch(() => {
+      btn.textContent = 'Something went wrong — try again';
+      btn.style.background = 'linear-gradient(135deg, #e17055, #d63031)';
+      btn.disabled = false;
+    });
   }
 
   // Subtle scroll reveal
