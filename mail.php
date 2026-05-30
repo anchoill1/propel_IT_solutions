@@ -1,13 +1,17 @@
 <?php
 header('Content-Type: application/json');
 
-// Only accept POST requests
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode(['success' => false, 'message' => 'Invalid request']);
+    echo json_encode(['success' => false]);
     exit;
 }
 
-// Collect and sanitise form fields
+require 'vendor/autoload.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+// Sanitise inputs
 $first_name = htmlspecialchars(strip_tags(trim($_POST['first_name'] ?? '')));
 $last_name  = htmlspecialchars(strip_tags(trim($_POST['last_name'] ?? '')));
 $email      = filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL);
@@ -15,59 +19,74 @@ $business   = htmlspecialchars(strip_tags(trim($_POST['business'] ?? '')));
 $service    = htmlspecialchars(strip_tags(trim($_POST['service'] ?? '')));
 $message    = htmlspecialchars(strip_tags(trim($_POST['message'] ?? '')));
 
-// Basic validation
-if (empty($first_name) || empty($last_name) || empty($email)) {
-    echo json_encode(['success' => false, 'message' => 'Missing required fields']);
+if (empty($first_name) || empty($last_name) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    echo json_encode(['success' => false]);
     exit;
 }
 
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo json_encode(['success' => false, 'message' => 'Invalid email address']);
-    exit;
-}
+$smtp_host = 'mail.adopt-it.ie';
+$smtp_user = 'joe@adopt-it.ie';
+$smtp_pass = '2126Therese1!';
+$smtp_port = 587;
 
-// Email settings
-$to      = 'joe@adopt-it.ie';
-$subject = "New Enquiry from {$first_name} {$last_name} — Adopt IT Solutions";
+try {
+    // Notification to Joe
+    $mail = new PHPMailer(true);
+    $mail->isSMTP();
+    $mail->Host       = $smtp_host;
+    $mail->SMTPAuth   = true;
+    $mail->Username   = $smtp_user;
+    $mail->Password   = $smtp_pass;
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port       = $smtp_port;
 
-$body = "You have a new enquiry from your website.\n\n";
-$body .= "-------------------------------------------\n";
-$body .= "Name:     {$first_name} {$last_name}\n";
-$body .= "Email:    {$email}\n";
-$body .= "Business: {$business}\n";
-$body .= "Service:  {$service}\n";
-$body .= "-------------------------------------------\n\n";
-$body .= "Message:\n{$message}\n\n";
-$body .= "-------------------------------------------\n";
-$body .= "Sent from adopt-it.ie\n";
+    $mail->setFrom('joe@adopt-it.ie', 'Adopt IT Solutions');
+    $mail->addAddress('joe@adopt-it.ie', 'Joe Murray');
+    $mail->addReplyTo($email, "$first_name $last_name");
 
-$headers  = "From: noreply@adopt-it.ie\r\n";
-$headers .= "Reply-To: {$email}\r\n";
-$headers .= "X-Mailer: PHP/" . phpversion();
+    $mail->Subject = "New Enquiry from $first_name $last_name — Adopt IT Solutions";
+    $mail->Body    =
+        "New enquiry from your website.\n\n" .
+        "-------------------------------------------\n" .
+        "Name:     $first_name $last_name\n" .
+        "Email:    $email\n" .
+        "Business: $business\n" .
+        "Service:  $service\n" .
+        "-------------------------------------------\n\n" .
+        "Message:\n$message\n\n" .
+        "Sent from adopt-it.ie\n";
 
-// Send email
-$sent = mail($to, $subject, $body, $headers);
+    $mail->send();
 
-if ($sent) {
-    // Send auto-reply to the enquirer
-    $reply_subject = "Thanks for getting in touch — Adopt IT Solutions";
-    $reply_body  = "Hi {$first_name},\n\n";
-    $reply_body .= "Thanks for reaching out to Adopt IT Solutions.\n\n";
-    $reply_body .= "I've received your message and will get back to you within one business day.\n\n";
-    $reply_body .= "In the meantime, feel free to visit our website at adopt-it.ie.\n\n";
-    $reply_body .= "Best regards,\n";
-    $reply_body .= "Joe Murray\n";
-    $reply_body .= "Founder, Adopt IT Solutions\n";
-    $reply_body .= "joe@adopt-it.ie\n";
-    $reply_body .= "adopt-it.ie\n";
+    // Auto-reply to enquirer
+    $reply = new PHPMailer(true);
+    $reply->isSMTP();
+    $reply->Host       = $smtp_host;
+    $reply->SMTPAuth   = true;
+    $reply->Username   = $smtp_user;
+    $reply->Password   = $smtp_pass;
+    $reply->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $reply->Port       = $smtp_port;
 
-    $reply_headers  = "From: joe@adopt-it.ie\r\n";
-    $reply_headers .= "X-Mailer: PHP/" . phpversion();
+    $reply->setFrom('joe@adopt-it.ie', 'Joe Murray — Adopt IT Solutions');
+    $reply->addAddress($email, "$first_name $last_name");
 
-    mail($email, $reply_subject, $reply_body, $reply_headers);
+    $reply->Subject = "Thanks for getting in touch — Adopt IT Solutions";
+    $reply->Body    =
+        "Hi $first_name,\n\n" .
+        "Thanks for reaching out to Adopt IT Solutions.\n\n" .
+        "I've received your message and will get back to you within one business day.\n\n" .
+        "Best regards,\n" .
+        "Joe Murray\n" .
+        "Founder, Adopt IT Solutions\n" .
+        "joe@adopt-it.ie\n" .
+        "adopt-it.ie\n";
+
+    $reply->send();
 
     echo json_encode(['success' => true]);
-} else {
-    echo json_encode(['success' => false, 'message' => 'Mail delivery failed']);
+
+} catch (Exception $e) {
+    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
 }
 ?>
