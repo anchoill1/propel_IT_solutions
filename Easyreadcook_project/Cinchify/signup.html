@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cinchify — School Subscription</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red:     #e8412a;
+      --green:   #2d8a4e;
+      --purple:  #7c3aed;
+      --text:    #1a1a1a;
+      --muted:   #666;
+      --bg:      #fafafa;
+      --card:    #ffffff;
+      --border:  #ede8ff;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: white;
+      border-bottom: 2px solid var(--border);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-logo {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-cta {
+      background: var(--red);
+      color: white;
+      border: none;
+      padding: .5rem 1.25rem;
+      border-radius: 50px;
+      font-family: 'Nunito', sans-serif;
+      font-size: .9rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #fff8f8 0%, #f5f0ff 100%);
+      padding: 72px 24px 80px;
+      text-align: center;
+      border-bottom: 2px solid var(--border);
+    }
+    .hero-badge {
+      display: inline-block;
+      background: #fef3f2;
+      border: 2px solid #fecaca;
+      color: var(--red);
+      font-size: .8rem;
+      font-weight: 800;
+      padding: .3rem .9rem;
+      border-radius: 50px;
+      margin-bottom: 20px;
+      letter-spacing: .5px;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 900;
+      line-height: 1.15;
+      color: var(--text);
+      max-width: 680px;
+      margin: 0 auto 20px;
+    }
+    .hero h1 span { color: var(--red); }
+    .hero p {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 auto 36px;
+    }
+    .hero-btns {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--red);
+      color: white;
+      border: none;
+      padding: .85rem 2rem;
+      border-radius: 50px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      font-weight: 900;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: opacity .2s;
+    }
+    .btn-primary:hover { opacity: .88; }
+    .btn-outline {
+      background: white;
+      color: var(--purple);
+      border: 2px solid var(--purple);
+      padding: .85rem 2rem;
+      border-radius: 50px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      font-weight: 900;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all .2s;
+    }
+    .btn-outline:hover { background: var(--purple); color: white; }
+
+    /* ── MOCKUP ── */
+    .mockup-section {
+      padding: 64px 24px;
+      text-align: center;
+      background: white;
+    }
+    .mockup-section h2 {
+      font-size: 1.6rem;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+    .mockup-section p {
+      color: var(--muted);
+      font-weight: 700;
+      margin-bottom: 40px;
+    }
+    .mockup-frame {
+      max-width: 720px;
+      margin: 0 auto;
+      background: #f0ecfc;
+      border-radius: 20px;
+      border: 3px solid var(--border);
+      padding: 40px 24px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--purple);
+      min-height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .mockup-frame .mock-icon { font-size: 3rem; }
+    .mockup-frame .mock-label { font-size: 1.1rem; font-weight: 800; color: var(--text); }
+    .mockup-frame .mock-sub { font-size: .85rem; color: var(--muted); }
+
+    /* ── FEATURES ── */
+    .features {
+      padding: 64px 24px;
+      background: var(--bg);
+    }
+    .features h2 {
+      text-align: center;
+      font-size: 1.7rem;
+      font-weight: 900;
+      margin-bottom: 48px;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .feature-card {
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .feature-icon {
+      font-size: 1.75rem;
+      flex-shrink: 0;
+      width: 44px;
+      text-align: center;
+    }
+    .feature-card h3 {
+      font-size: .95rem;
+      font-weight: 900;
+      margin-bottom: 4px;
+    }
+    .feature-card p {
+      font-size: .82rem;
+      font-weight: 700;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ── PRICING ── */
+    .pricing {
+      padding: 80px 24px;
+      background: white;
+      border-top: 2px solid var(--border);
+    }
+    .pricing-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .pricing-header h2 {
+      font-size: 1.8rem;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+    .pricing-header p {
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 1rem;
+    }
+    .trial-banner {
+      display: inline-block;
+      background: #f0fdf4;
+      border: 2px solid #86efac;
+      color: var(--green);
+      font-weight: 900;
+      font-size: .9rem;
+      padding: .4rem 1.1rem;
+      border-radius: 50px;
+      margin-top: 12px;
+    }
+    .pricing-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .pricing-card {
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      transition: box-shadow .2s;
+    }
+    .pricing-card:hover { box-shadow: 0 8px 32px rgba(124,58,237,.12); }
+    .pricing-card.featured {
+      border-color: var(--purple);
+      position: relative;
+    }
+    .featured-badge {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--purple);
+      color: white;
+      font-size: .75rem;
+      font-weight: 900;
+      padding: .25rem .85rem;
+      border-radius: 50px;
+      white-space: nowrap;
+    }
+    .pricing-tier {
+      font-size: .85rem;
+      font-weight: 900;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+    .pricing-price {
+      font-size: 2.6rem;
+      font-weight: 900;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .pricing-price span {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .pricing-desc {
+      font-size: .88rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 24px;
+      margin-top: 6px;
+    }
+    .pricing-features {
+      list-style: none;
+      margin-bottom: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+    .pricing-features li {
+      font-size: .88rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .pricing-features li::before {
+      content: '✓';
+      color: var(--green);
+      font-weight: 900;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .pricing-cta {
+      background: var(--purple);
+      color: white;
+      border: none;
+      padding: .9rem;
+      border-radius: 50px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      font-weight: 900;
+      cursor: pointer;
+      width: 100%;
+      transition: opacity .2s;
+    }
+    .pricing-cta:hover { opacity: .88; }
+    .pricing-cta.red { background: var(--red); }
+    .pricing-trial-note {
+      text-align: center;
+      font-size: .78rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    /* ── SIGNUP MODAL ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: white;
+      border-radius: 20px;
+      padding: 32px;
+      max-width: 440px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,.2);
+    }
+    .modal h3 {
+      font-size: 1.3rem;
+      font-weight: 900;
+      margin-bottom: 6px;
+    }
+    .modal p.modal-sub {
+      font-size: .88rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-size: .85rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .form-group input {
+      width: 100%;
+      padding: .7rem 1rem;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-family: 'Nunito', sans-serif;
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--text);
+      outline: none;
+      transition: border-color .2s;
+    }
+    .form-group input:focus { border-color: var(--purple); }
+    .modal-submit {
+      background: var(--purple);
+      color: white;
+      border: none;
+      padding: .9rem;
+      border-radius: 50px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      font-weight: 900;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 8px;
+      transition: opacity .2s;
+    }
+    .modal-submit:hover:not(:disabled) { opacity: .88; }
+    .modal-submit:disabled { opacity: .5; cursor: not-allowed; }
+    .modal-cancel {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-family: 'Nunito', sans-serif;
+      font-size: .88rem;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+      padding: .4rem;
+    }
+    .modal-cancel:hover { color: var(--text); }
+    .modal-error {
+      background: #fef2f2;
+      border: 1.5px solid #fecaca;
+      color: #dc2626;
+      font-size: .83rem;
+      font-weight: 700;
+      padding: .6rem .9rem;
+      border-radius: 8px;
+      margin-top: 12px;
+      display: none;
+    }
+    .modal-error.show { display: block; }
+
+    /* ── TRUST ── */
+    .trust {
+      padding: 48px 24px;
+      background: var(--bg);
+      border-top: 2px solid var(--border);
+    }
+    .trust-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .trust-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .trust-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    .trust-item h4 { font-size: .9rem; font-weight: 900; margin-bottom: 2px; }
+    .trust-item p  { font-size: .8rem; font-weight: 700; color: var(--muted); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: white;
+      border-top: 2px solid var(--border);
+      padding: 24px;
+      text-align: center;
+      font-size: .82rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    footer a { color: var(--purple); text-decoration: none; }
+
+    /* ── CANCELLED BANNER ── */
+    .cancelled-banner {
+      background: #fef3f2;
+      border-bottom: 2px solid #fecaca;
+      color: var(--red);
+      text-align: center;
+      padding: 12px 24px;
+      font-weight: 800;
+      font-size: .9rem;
+      display: none;
+    }
+    .cancelled-banner.show { display: block; }
+  </style>
+</head>
+<body>
+
+<!-- Cancelled banner (shown if returning from Stripe with ?cancelled=1) -->
+<div class="cancelled-banner" id="cancelled-banner">
+  No worries — you weren't charged. Come back whenever you're ready! 🙂
+</div>
+
+<!-- Nav -->
+<nav>
+  <a href="/" class="nav-logo">🍳 Cinchify</a>
+  <a href="#pricing" class="nav-cta">See pricing</a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">🏫 Designed for Irish & UK schools</div>
+  <h1>The cooking app your <span>students will love</span></h1>
+  <p>Beautiful step-by-step recipe cards, AI-generated illustrations, PDF export, and YouTube import — all in one app built for the classroom.</p>
+  <div class="hero-btns">
+    <a href="#pricing" class="btn-primary">Start free 30-day trial</a>
+    <a href="/" class="btn-outline" target="_blank">See the app →</a>
+  </div>
+</section>
+
+<!-- Mockup -->
+<section class="mockup-section">
+  <h2>Works beautifully on school iPads & tablets</h2>
+  <p>No installation needed — just open in the browser and go.</p>
+  <div class="mockup-frame">
+    <div class="mock-icon">📱</div>
+    <div class="mock-label">App screenshot coming soon</div>
+    <div class="mock-sub">Works on iPad, Android tablet, and any school computer</div>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="features">
+  <h2>Everything your cookery class needs</h2>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">📋</div>
+      <div>
+        <h3>Unlimited recipes</h3>
+        <p>Build your entire school recipe library. Organise by category, add photos, chips and tips.</p>
+      </div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎨</div>
+      <div>
+        <h3>AI step illustrations</h3>
+        <p>Generate cartoon-style illustrations for every step automatically. Students know exactly what to do.</p>
+      </div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📄</div>
+      <div>
+        <h3>PDF export</h3>
+        <p>Print beautiful recipe cards for students to take home. One tap to export any recipe.</p>
+      </div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎬</div>
+      <div>
+        <h3>Import from YouTube</h3>
+        <p>Paste a YouTube cooking video URL and the app builds the recipe automatically using AI.</p>
+      </div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📷</div>
+      <div>
+        <h3>Import from photo or PDF</h3>
+        <p>Take a photo of a recipe book page — AI converts it to a full digital recipe instantly.</p>
+      </div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔊</div>
+      <div>
+        <h3>Text-to-speech</h3>
+        <p>Tap any step and hear it read aloud. Perfect for students who need extra support.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section class="pricing" id="pricing">
+  <div class="pricing-header">
+    <h2>Simple, transparent pricing</h2>
+    <p>One licence covers your whole school — no per-user fees.</p>
+    <div class="trial-banner">🎉 30-day free trial on all plans — no card charged until day 31</div>
+  </div>
+
+  <div class="pricing-cards">
+
+    <!-- Primary -->
+    <div class="pricing-card">
+      <div class="pricing-tier">Primary School</div>
+      <div class="pricing-price">£249 <span>/ year</span></div>
+      <div class="pricing-desc">For primary schools (ages 4–12)</div>
+      <ul class="pricing-features">
+        <li>Unlimited recipes</li>
+        <li>AI step illustrations</li>
+        <li>PDF export</li>
+        <li>YouTube & photo import</li>
+        <li>Text-to-speech</li>
+        <li>Works on iPads & tablets</li>
+        <li>All future updates included</li>
+      </ul>
+      <button class="pricing-cta red" onclick="openSignup('primary')">Start free trial</button>
+      <p class="pricing-trial-note">30 days free · Cancel anytime</p>
+    </div>
+
+    <!-- Secondary -->
+    <div class="pricing-card featured">
+      <div class="featured-badge">Most popular</div>
+      <div class="pricing-tier">Secondary School</div>
+      <div class="pricing-price">£399 <span>/ year</span></div>
+      <div class="pricing-desc">For secondary schools (ages 12–18)</div>
+      <ul class="pricing-features">
+        <li>Everything in Primary</li>
+        <li>Advanced recipe library</li>
+        <li>AI step illustrations</li>
+        <li>PDF export</li>
+        <li>YouTube & photo import</li>
+        <li>Text-to-speech</li>
+        <li>All future updates included</li>
+      </ul>
+      <button class="pricing-cta" onclick="openSignup('secondary')">Start free trial</button>
+      <p class="pricing-trial-note">30 days free · Cancel anytime</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- Trust signals -->
+<section class="trust">
+  <div class="trust-inner">
+    <div class="trust-item">
+      <div class="trust-icon">🏫</div>
+      <div>
+        <h4>Used in schools across Ireland</h4>
+        <p>Trusted by cookery teachers in primary and secondary schools.</p>
+      </div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">🔒</div>
+      <div>
+        <h4>GDPR-friendly</h4>
+        <p>No student data collected. Your recipes stay private to your school.</p>
+      </div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">💳</div>
+      <div>
+        <h4>Cancel anytime</h4>
+        <p>No long-term contract. Cancel from your billing portal whenever you like.</p>
+      </div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">📧</div>
+      <div>
+        <h4>Real support</h4>
+        <p>Questions? Email <a href="mailto:licences@cinchify.ie" style="color:var(--purple)">licences@cinchify.ie</a> and get a real reply.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Cinchify &copy; 2025 · <a href="mailto:licences@cinchify.ie">licences@cinchify.ie</a> · <a href="/">Open the app</a></p>
+</footer>
+
+<!-- Signup Modal -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <h3 id="modal-title">Start your free trial</h3>
+    <p class="modal-sub">30 days free — no card charged until day 31. Cancel anytime.</p>
+
+    <div class="form-group">
+      <label for="school-name">School name *</label>
+      <input type="text" id="school-name" placeholder="St. Mary's Primary School" autocomplete="organization">
+    </div>
+    <div class="form-group">
+      <label for="contact-name">Your name *</label>
+      <input type="text" id="contact-name" placeholder="Ms. O'Brien" autocomplete="name">
+    </div>
+    <div class="form-group">
+      <label for="school-email">School email address *</label>
+      <input type="email" id="school-email" placeholder="teacher@stmarys.ie" autocomplete="email">
+    </div>
+
+    <div class="modal-error" id="modal-error"></div>
+
+    <button class="modal-submit" id="modal-submit" onclick="submitSignup()">
+      Continue to payment →
+    </button>
+    <button class="modal-cancel" onclick="closeSignup()">Cancel</button>
+  </div>
+</div>
+
+<script>
+  let selectedTier = 'primary';
+
+  // Show cancelled banner
+  if (new URLSearchParams(location.search).get('cancelled') === '1') {
+    document.getElementById('cancelled-banner').classList.add('show');
+  }
+
+  function openSignup(tier) {
+    selectedTier = tier;
+    const overlay = document.getElementById('modal-overlay');
+    const title   = document.getElementById('modal-title');
+    const submit  = document.getElementById('modal-submit');
+    const tierLabel = tier === 'primary' ? 'Primary School (£249/year)' : 'Secondary School (£399/year)';
+
+    title.textContent = `Start your free trial — ${tierLabel}`;
+    submit.style.background = tier === 'primary' ? 'var(--red)' : 'var(--purple)';
+
+    document.getElementById('modal-error').classList.remove('show');
+    overlay.classList.add('open');
+    setTimeout(() => document.getElementById('school-name').focus(), 100);
+
+    overlay.addEventListener('keydown', trapFocus);
+    document.addEventListener('keydown', escClose);
+  }
+
+  function closeSignup() {
+    document.getElementById('modal-overlay').classList.remove('open');
+    document.removeEventListener('keydown', escClose);
+  }
+
+  function escClose(e) { if (e.key === 'Escape') closeSignup(); }
+
+  function trapFocus(e) {
+    if (e.key !== 'Tab') return;
+    const modal    = document.querySelector('.modal');
+    const focusable = Array.from(modal.querySelectorAll('button, input, [tabindex]:not([tabindex="-1"])'));
+    const first = focusable[0], last = focusable[focusable.length - 1];
+    if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last.focus(); } }
+    else { if (document.activeElement === last) { e.preventDefault(); first.focus(); } }
+  }
+
+  // Close on backdrop click
+  document.getElementById('modal-overlay').addEventListener('click', function(e) {
+    if (e.target === this) closeSignup();
+  });
+
+  async function submitSignup() {
+    const schoolName   = document.getElementById('school-name').value.trim();
+    const contactName  = document.getElementById('contact-name').value.trim();
+    const email        = document.getElementById('school-email').value.trim();
+    const errEl        = document.getElementById('modal-error');
+    const btn          = document.getElementById('modal-submit');
+
+    errEl.classList.remove('show');
+
+    if (!schoolName || !contactName || !email) {
+      errEl.textContent = 'Please fill in all fields.';
+      errEl.classList.add('show');
+      return;
+    }
+    if (!email.includes('@') || !email.includes('.')) {
+      errEl.textContent = 'Please enter a valid email address.';
+      errEl.classList.add('show');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Redirecting to payment…';
+
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tier: selectedTier, email, school_name: schoolName, contact_name: contactName })
+      });
+      const data = await res.json();
+
+      if (data.ok && data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error(data.error || 'Something went wrong — please try again.');
+      }
+    } catch (e) {
+      errEl.textContent = e.message;
+      errEl.classList.add('show');
+      btn.disabled = false;
+      btn.textContent = 'Continue to payment →';
+    }
+  }
+</script>
+
+</body>
+</html>
